@@ -4,15 +4,11 @@
 # писал в atom (с linter), так как pyCharm на macOs шалит(эффект залипания в редакторе)
 
 import requests
+import proto
 from datetime import datetime
 
 
 apiKey = '27721ef0167e69d1708971dc196bf703'
-
-
-# JS array.prototype.every equivalent (ES6)
-def every(list_, pred):
-    return all(pred(i) for i in list_)
 
 
 def decide():
@@ -31,8 +27,11 @@ def decide():
 
 def get_weather(api_key, location):
     url = 'https://api.openweathermap.org/data/2.5/forecast?q={}&units=metric&appid={}'.format(location, api_key)
-    r = requests.get(url)
-    return r.json()
+    try:
+        r = requests.get(url)
+        return r.json()
+    except requests.exceptions.RequestException as e:  # This is the correct syntax
+        print('Caught Execption:', e)
 
 
 def check():
@@ -40,6 +39,7 @@ def check():
     list = weather['list']
     print('Уточка смотрит прогноз погоды...')
     check = {'Snow': False, 'Rain': False, 'Clouds': False}
+    # print(proto.filter(1234, lambda x: x['weather'][0]['main'] == 'Snow'))
     for x in list:
         temp = x['main']['temp_max']
         # -273
@@ -62,7 +62,8 @@ def check():
 def solution(a):
     # lambda func as JS arrow func equivalent
     # every(a.values(), lambda e: e == False)
-    if not any(a.values()):
+    # every(a.values(), lambda e: not True)
+    if proto.every(a.values(), lambda e: e is False):
         print('Сегодня будет хорошая погода!')
         return
 
