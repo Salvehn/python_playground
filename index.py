@@ -61,7 +61,8 @@ def check():
 
 def solution(a):
     # lambda func as JS arrow func equivalent
-    if every(a.values(), lambda e: e == False):
+    # every(a.values(), lambda e: e == False)
+    if not any(a.values()):
         print('Сегодня будет хорошая погода!')
         return
 
