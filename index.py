@@ -1,6 +1,7 @@
-#GuidovanRossum<guido@python.org>
-
-# писал в atom, так как pyCharm на macOs шалит(эффект залипания в редакторе)
+# GuidovanRossum<guido@python.org>
+# последовательность этапов
+# (на одном из этапов смотрит погоду на openweathermap API)
+# писал в atom (с linter), так как pyCharm на macOs шалит(эффект залипания в редакторе)
 
 import requests
 from datetime import datetime
@@ -66,10 +67,22 @@ def solution(a):
 
     if a['Snow']:
         print('Уточке следует одеться теплее!')
-    if a['Rain']:
-        print('Уточке следует взять зонтик!')
     if a['Clouds']:
         print('Уточке следует знать, что сегодня будет пасмурно!')
+    if a['Rain']:
+        print('Уточке следует взять зонтик!')
+        print(
+            'Уточка, взяла зонтик?.'
+        )
+        option = ''
+        options = {'да': True, 'нет': False}
+        while option not in options:
+            print('Выберите: {}/{}'.format(*options))
+            option = input()
+        if options[option]:
+            print('Уточка молодец)')
+        print('Глупая уточка)')
+    return
 
 
 dispatch = {
