@@ -95,6 +95,8 @@ def sequence():
             dispatch[v](prev)
             return
         prev = dispatch[v]()
+        if prev is None:
+            break
 
 
 if __name__ == '__main__':
