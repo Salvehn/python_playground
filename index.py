@@ -3,12 +3,9 @@
 # (на одном из этапов смотрит погоду на openweathermap API)
 # писал в atom (с linter), так как pyCharm на macOs шалит(эффект залипания в редакторе)
 
-import requests
 import proto
 from datetime import datetime
-
-
-apiKey = '27721ef0167e69d1708971dc196bf703'
+import zerorpc
 
 
 def decide():
@@ -25,17 +22,14 @@ def decide():
     return False
 
 
-def get_weather(api_key, location):
-    url = 'https://api.openweathermap.org/data/2.5/forecast?q={}&units=metric&appid={}'.format(location, api_key)
-    try:
-        r = requests.get(url)
-        return r.json()
-    except requests.exceptions.RequestException as e:  # This is the correct syntax
-        print('Caught Execption:', e)
+def get_weather():
+    c = zerorpc.Client()
+    c.connect("tcp://127.0.0.1:4242")
+    return c.weather("moscow")
 
 
 def check():
-    weather = get_weather(apiKey, 'moscow')
+    weather = get_weather()
     list = weather['list']
     print('Уточка смотрит прогноз погоды...')
     check = {'Snow': False, 'Rain': False, 'Clouds': False}
