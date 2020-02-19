@@ -15,6 +15,8 @@ class RPC(object):
         return None
 
 
-s = zerorpc.Server(RPC())
-s.bind("tcp://0.0.0.0:4242")
-s.run()
+if __name__ == '__main__':
+    print('API server started')
+    s = zerorpc.Server(RPC())
+    s.bind("tcp://0.0.0.0:4242")
+    s.run()
