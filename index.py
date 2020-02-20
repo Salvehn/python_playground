@@ -6,7 +6,7 @@
 import proto
 from datetime import datetime
 import zerorpc
-
+from time import time
 
 def decide():
     print(
@@ -23,9 +23,13 @@ def decide():
 
 
 def get_weather():
+    start = time()
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    return c.weather("moscow")
+    weather = c.weather("moscow")
+    end = time() - start
+    print('API Response time : {}'.format(end))
+    return weather
 
 
 def check():
@@ -37,15 +41,18 @@ def check():
     for x in list:
         temp = x['main']['temp_max']
         # -273
-        print(''.join([
-            str(datetime.fromtimestamp(x['dt'])),
-            ' Temp: ',
-            str(temp),
-            'C',
-            ' Погодные условия: ',
-            x['weather'][0]['main']
-            ])
+        interval = proto.concat(*[
+                ' ',
+                str(datetime.fromtimestamp(x['dt'])),
+                'Temp:',
+                str(temp),
+                'C',
+                'Погодные условия:',
+                x['weather'][0]['main']
+            ]
         )
+
+        print(interval)
         conditions = x['weather'][0]['main']
 
         if conditions in check.keys():
